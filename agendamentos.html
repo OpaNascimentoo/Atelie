@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>Ateliê Bella Costura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #FAF7F2;
+      --cream2:   #F3EDE3;
+      --cream3:   #E8DDD0;
+      --wine:     #6B2737;
+      --wine2:    #8B3548;
+      --wine-dim: rgba(107,39,55,0.12);
+      --gold:     #B8955A;
+      --gold2:    #D4AF7A;
+      --charcoal: #2C2420;
+      --warm-gray:#7A6F69;
+      --light-text:#A89890;
+      --white:    #FFFFFF;
+      --card:     #FFFFFF;
+
+      --status-prod-bg:  #FDF3E7; --status-prod-text:  #96580A; --status-prod-dot:  #E07B1A; --status-prod-bar: #E07B1A;
+      --status-ag-bg:    #EEF2FF; --status-ag-text:    #3730A3; --status-ag-dot:    #6366F1; --status-ag-bar: #6366F1;
+      --status-prova-bg: #FDF4FF; --status-prova-text: #86198F; --status-prova-dot: #C026D3; --status-prova-bar: #C026D3;
+      --status-ent-bg:   #F0FDF4; --status-ent-text:   #166534; --status-ent-dot:   #16A34A; --status-ent-bar: #16A34A;
+
+      --r-sm: 10px;
+      --r-md: 16px;
+      --r-lg: 22px;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Jost', sans-serif;
+    }
+
+    html, body, #root { height: 100%; }
+    body {
+      font-family: var(--font-sans);
+      background: gray;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    #root {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: var(--cream);
+    }
+
+    /* ── SCREEN TRANSITIONS ─────────────────────── */
+    .screen {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      transition: transform .38s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+      will-change: transform, opacity;
+    }
+    .screen.hidden-left  { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+    .screen.hidden-right { transform: translateX(100%);  opacity: 0; pointer-events: none; }
+    .screen.visible      { transform: translateX(0);     opacity: 1; }
+
+    /* ── LOGIN ──────────────────────────────────── */
+    #screen-login {
+      background: var(--charcoal);
+      align-items: center;
+      justify-content: center;
+      padding: 36px 28px;
+      overflow: hidden;
+    }
+
+    /* Fabric texture dots */
+    #screen-login::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(184,149,90,0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .login-deco-top {
+      position: absolute; top: -60px; right: -60px;
+      width: 240px; height: 240px; border-radius: 50%;
+      border: 60px solid rgba(107,39,55,0.2);
+      pointer-events: none;
+    }
+    .login-deco-bot {
+      position: absolute; bottom: -80px; left: -40px;
+      width: 200px; height: 200px; border-radius: 50%;
+      border: 50px solid rgba(184,149,90,0.12);
+      pointer-events: none;
+    }
+
+    .login-inner { width: 100%; max-width: 360px; z-index: 1; }
+
+    /* Logo */
+    .logo-wrap { text-align: center; margin-bottom: 36px; }
+    .logo-emblem {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--wine);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 0 0 8px rgba(107,39,55,0.18), 0 12px 32px rgba(107,39,55,0.35);
+    }
+    .logo-emblem svg { width: 34px; height: 34px; stroke: var(--gold2); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .logo-name {
+      font-family: var(--font-serif);
+      font-size: 32px; font-weight: 400;
+      color: var(--cream); letter-spacing: 1px;
+      line-height: 1;
+    }
+    .logo-name em { color: var(--gold2); font-style: italic; }
+    .logo-tagline { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--light-text); margin-top: 8px; }
+
+    /* Card */
+    .login-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r-lg);
+      padding: 32px 28px;
+      backdrop-filter: blur(10px);
+    }
+    .login-title { font-family: var(--font-serif); font-size: 26px; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
+    .login-title em { font-style: italic; color: var(--gold2); }
+    .login-subtitle { font-size: 13px; color: rgba(250,247,242,0.45); margin-bottom: 28px; letter-spacing: 0.3px; }
+
+    .field { margin-bottom: 16px; }
+    .field-label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(250,247,242,0.4); margin-bottom: 8px; }
+    .field-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r-sm);
+      padding: 0 14px; height: 50px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,149,90,0.15);
+    }
+    .field-icon { width: 16px; height: 16px; stroke: rgba(250,247,242,0.3); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; transition: stroke .2s; }
+    .field-wrap:focus-within .field-icon { stroke: var(--gold2); }
+    .field-wrap input {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--cream); font-family: var(--font-sans); font-size: 14px;
+    }
+    .field-wrap input::placeholder { color: rgba(250,247,242,0.2); }
+    .eye-btn { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; }
+    .eye-btn svg { width: 16px; height: 16px; stroke: rgba(250,247,242,0.3); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .error-msg {
+      display: none; margin-bottom: 14px;
+      color: #FCA5A5; font-size: 12px;
+      padding: 8px 12px;
+      background: rgba(252,165,165,0.1);
+      border: 1px solid rgba(252,165,165,0.2);
+      border-radius: 8px;
+    }
+    .error-msg.show { display: block; }
+
+    .forgot { text-align: right; margin-bottom: 22px; }
+    .forgot a { font-size: 12px; color: var(--gold2); text-decoration: none; opacity: .8; }
+
+    .btn-login {
+      width: 100%; height: 50px;
+      background: var(--wine);
+      border: none; border-radius: var(--r-sm);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      color: var(--cream);
+      font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+      letter-spacing: 2px; text-transform: uppercase;
+      box-shadow: 0 8px 24px rgba(107,39,55,0.4);
+      transition: filter .15s, transform .15s;
+    }
+    .btn-login:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-login:active { transform: scale(0.98); }
+    .btn-login svg { width: 16px; height: 16px; stroke: var(--gold2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .login-footer { display: flex; justify-content: center; gap: 6px; margin-top: 22px; font-size: 12px; color: rgba(250,247,242,0.35); }
+    .login-footer a { color: var(--gold2); text-decoration: none; }
+    .version-tag { text-align: center; font-size: 11px; color: rgba(250,247,242,0.2); margin-top: 24px; letter-spacing: 1px; }
+
+    /* ── MAIN ───────────────────────────────────── */
+    #screen-main { background: var(--cream); }
+
+    /* Header */
+    .app-header {
+      background: var(--charcoal);
+      padding: 14px 20px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .app-header::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.4;
+    }
+    .h-left { display: flex; align-items: center; gap: 12px; }
+    .h-emblem {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--wine);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(184,149,90,0.3);
+    }
+    .h-emblem svg { width: 18px; height: 18px; stroke: var(--gold2); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .h-name { font-family: var(--font-serif); font-size: 18px; font-weight: 400; color: var(--cream); letter-spacing: 0.5px; }
+    .h-name em { color: var(--gold2); font-style: italic; }
+    .h-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(250,247,242,0.35); margin-top: 1px; }
+    .h-right { display: flex; align-items: center; gap: 8px; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative;
+      transition: background .2s;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); }
+    .icon-btn svg { width: 18px; height: 18px; stroke: rgba(250,247,242,0.7); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .notif-pip { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--wine2); border: 1.5px solid var(--charcoal); }
+    .avatar-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--wine);
+      border: 1px solid rgba(184,149,90,0.35);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-family: var(--font-sans); font-size: 12px; font-weight: 500; color: var(--gold2);
+      transition: filter .2s;
+    }
+    .avatar-btn:hover { filter: brightness(1.15); }
+
+    /* Scroll */
+    .main-scroll {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 20px 18px 100px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .main-scroll::-webkit-scrollbar { display: none; }
+
+    /* Stats */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+    .stat-card {
+      border-radius: var(--r-sm);
+      padding: 12px 6px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .stat-card.s-prod  { background: var(--status-prod-bg); }
+    .stat-card.s-ag    { background: var(--status-ag-bg); }
+    .stat-card.s-prova { background: var(--status-prova-bg); }
+    .stat-card.s-ent   { background: var(--status-ent-bg); }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .stat-num { font-family: var(--font-serif); font-size: 24px; font-weight: 600; color: var(--charcoal); line-height: 1; }
+    .stat-lbl { font-size: 9px; letter-spacing: 0.5px; text-align: center; line-height: 1.3; }
+    .s-prod  .stat-lbl { color: var(--status-prod-text); }
+    .s-ag    .stat-lbl { color: var(--status-ag-text); }
+    .s-prova .stat-lbl { color: var(--status-prova-text); }
+    .s-ent   .stat-lbl { color: var(--status-ent-text); }
+
+    /* Search */
+    .search-row { display: flex; gap: 10px; margin-bottom: 22px; }
+    .search-wrap {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--cream3);
+      border-radius: var(--r-sm);
+      padding: 0 14px; height: 46px;
+    }
+    .search-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,149,90,0.1); }
+    .search-wrap svg { width: 15px; height: 15px; stroke: var(--light-text); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .search-wrap input { flex: 1; background: transparent; border: none; outline: none; font-family: var(--font-sans); font-size: 13px; color: var(--charcoal); }
+    .search-wrap input::placeholder { color: var(--light-text); }
+    .clear-btn { background: none; border: none; cursor: pointer; padding: 2px; display: flex; align-items: center; }
+    .clear-btn svg { width: 14px; height: 14px; stroke: var(--cream3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .filter-btn {
+      width: 46px; height: 46px; border-radius: var(--r-sm);
+      background: var(--wine); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(107,39,55,0.35);
+      flex-shrink: 0; transition: filter .15s;
+    }
+    .filter-btn:hover { filter: brightness(1.12); }
+    .filter-btn svg { width: 18px; height: 18px; stroke: var(--gold2); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Section header */
+    .sec-hdr { display: flex; align-items: center; gap: 10px; margin: 6px 0 13px; }
+    .sec-rule { flex: 1; height: 1px; background: var(--cream3); }
+    .sec-title { font-family: var(--font-serif); font-size: 15px; font-weight: 500; color: var(--charcoal); white-space: nowrap; letter-spacing: 0.3px; }
+    .sec-title em { color: var(--gold); font-style: italic; }
+    .sec-badge { font-size: 10px; font-weight: 500; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+
+    /* Cards */
+    .order-card {
+      background: var(--white);
+      border-radius: var(--r-md);
+      margin-bottom: 10px;
+      border: 1px solid var(--cream3);
+      overflow: hidden;
+      display: flex;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .order-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(44,36,32,0.1); }
+    .card-ribbon { width: 4px; flex-shrink: 0; }
+    .card-body { flex: 1; padding: 14px 14px 12px; }
+
+    /* Card top row */
+    .card-top { display: flex; align-items: flex-start; gap: 10px; }
+    .svc-thumb {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--cream2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--cream3);
+    }
+    .svc-thumb svg { width: 20px; height: 20px; stroke: var(--wine); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .card-meta { flex: 1; min-width: 0; }
+    .card-client { font-family: var(--font-serif); font-size: 16px; font-weight: 500; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+    .card-service { font-size: 12px; color: var(--warm-gray); margin-top: 2px; }
+    .card-peca {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--warm-gray); margin-top: 4px;
+    }
+    .card-peca svg { width: 10px; height: 10px; stroke: var(--light-text); fill: none; stroke-width: 2; }
+    .status-pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 9px; border-radius: 20px;
+      border-width: 1px; border-style: solid;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .status-pip { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .status-txt { font-size: 10px; font-weight: 500; letter-spacing: 0.3px; }
+
+    .card-divider { height: 1px; background: var(--cream2); margin: 10px 0; }
+
+    .card-foot { display: flex; align-items: center; gap: 12px; }
+    .c-meta { display: flex; align-items: center; gap: 4px; }
+    .c-meta svg { width: 12px; height: 12px; stroke: var(--light-text); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .c-meta span { font-size: 11px; color: var(--warm-gray); font-weight: 400; }
+    .details-btn {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 3px;
+      background: var(--cream2); border: 1px solid var(--cream3);
+      border-radius: 20px; padding: 4px 11px;
+      color: var(--wine); cursor: pointer;
+      font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+      transition: background .15s, transform .15s;
+    }
+    .details-btn:hover { background: var(--cream3); transform: translateX(1px); }
+    .details-btn svg { width: 11px; height: 11px; stroke: var(--wine); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Empty */
+    .empty-state { display: flex; flex-direction: column; align-items: center; padding: 56px 20px; gap: 10px; }
+    .empty-state svg { width: 44px; height: 44px; stroke: var(--cream3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .empty-title { font-family: var(--font-serif); font-size: 18px; color: var(--warm-gray); }
+    .empty-sub { font-size: 12px; color: var(--light-text); }
+
+    /* FAB */
+    .fab {
+      position: fixed; bottom: 26px;
+      right: calc(50% - 215px + 18px);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: var(--wine); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(107,39,55,0.45);
+      z-index: 100;
+      transition: transform .15s, filter .15s;
+    }
+    .fab:hover { transform: scale(1.06); filter: brightness(1.1); }
+    .fab:active { transform: scale(0.96); }
+    .fab svg { width: 24px; height: 24px; stroke: var(--gold2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(44,36,32,0.55);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-sheet {
+      background: var(--cream); width: 100%; max-width: 430px;
+      border-top-left-radius: 22px; border-top-right-radius: 22px;
+      padding: 16px 24px 36px;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.4,0,.2,1);
+    }
+    .modal-overlay.open .modal-sheet { transform: translateY(0); }
+    .modal-handle { width: 36px; height: 3px; background: var(--cream3); border-radius: 2px; margin: 0 auto 18px; }
+    .modal-title { font-family: var(--font-serif); font-size: 20px; font-weight: 400; color: var(--charcoal); margin-bottom: 4px; }
+    .modal-service { font-size: 12px; color: var(--warm-gray); letter-spacing: 0.3px; margin-bottom: 18px; }
+    .modal-divider { height: 1px; background: var(--cream3); margin-bottom: 14px; }
+    .modal-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--cream2); }
+    .modal-row:last-of-type { border-bottom: none; }
+    .modal-lbl { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--light-text); }
+    .modal-val { font-size: 14px; color: var(--charcoal); font-weight: 500; }
+    .modal-close {
+      width: 100%; height: 48px; margin-top: 22px;
+      background: var(--wine); border: none; border-radius: var(--r-sm);
+      color: var(--cream); font-family: var(--font-sans); font-size: 12px;
+      font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: filter .15s;
+    }
+    .modal-close:hover { filter: brightness(1.1); }
+
+    /* Stitch decoration (header ornament) */
+    .stitch-line {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin: 10px 0 2px;
+    }
+    .stitch-line span { display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0.5; }
+    .stitch-line .stitch-long { width: 28px; height: 1px; border-radius: 1px; background: var(--gold); opacity: 0.3; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fu { animation: fadeUp .5s ease forwards; }
+    .fu1 { opacity: 0; animation-delay: .05s; }
+    .fu2 { opacity: 0; animation-delay: .18s; }
+    .fu3 { opacity: 0; animation-delay: .3s; }
+
+    @media (max-width: 480px) {
+      #root { max-width: 100%; }
+      .fab { right: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- ── INLINE SVG SYMBOLS ───────────────────────────────────────── -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Scissors -->
+  <symbol id="ic-scissors" viewBox="0 0 24 24">
+    <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+    <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+    <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+    <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+  </symbol>
+  <!-- Needle / sewing (custom path) -->
+  <symbol id="ic-needle" viewBox="0 0 24 24">
+    <path d="M12 3 C12 3 20 8 20 14 C20 18.4 16.4 22 12 22 C7.6 22 4 18.4 4 14 C4 8 12 3 12 3Z"/>
+    <line x1="12" y1="3" x2="12" y2="14"/>
+    <ellipse cx="12" cy="14" rx="2" ry="2"/>
+  </symbol>
+  <!-- Thread spool -->
+  <symbol id="ic-spool" viewBox="0 0 24 24">
+    <ellipse cx="12" cy="5" rx="7" ry="3"/>
+    <ellipse cx="12" cy="19" rx="7" ry="3"/>
+    <line x1="5" y1="5" x2="5" y2="19"/>
+    <line x1="19" y1="5" x2="19" y2="19"/>
+    <ellipse cx="12" cy="12" rx="3" ry="5"/>
+  </symbol>
+  <!-- Ruler -->
+  <symbol id="ic-ruler" viewBox="0 0 24 24">
+    <path d="M3 21l18-18M7.5 13.5L10.5 16.5M10.5 10.5L13.5 13.5M13.5 7.5L16.5 10.5"/>
+    <line x1="3" y1="21" x2="21" y2="3"/>
+  </symbol>
+  <!-- Shirt / garment -->
+  <symbol id="ic-shirt" viewBox="0 0 24 24">
+    <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
+  </symbol>
+  <!-- Wrench / fix -->
+  <symbol id="ic-wrench" viewBox="0 0 24 24">
+    <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+  </symbol>
+  <!-- Star / customização -->
+  <symbol id="ic-star" viewBox="0 0 24 24">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </symbol>
+  <!-- Tuxedo / terno -->
+  <symbol id="ic-tux" viewBox="0 0 24 24">
+    <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
+    <line x1="12" y1="10" x2="12" y2="18"/>
+    <polyline points="10 10 12 7 14 10"/>
+  </symbol>
+  <!-- Tag / peça -->
+  <symbol id="ic-tag" viewBox="0 0 24 24">
+    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+    <line x1="7" y1="7" x2="7.01" y2="7"/>
+  </symbol>
+  <!-- Calendar -->
+  <symbol id="ic-cal" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="18" rx="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </symbol>
+  <!-- Clock -->
+  <symbol id="ic-clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </symbol>
+  <!-- Bell -->
+  <symbol id="ic-bell" viewBox="0 0 24 24">
+    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 01-3.46 0"/>
+  </symbol>
+  <!-- Search -->
+  <symbol id="ic-search" viewBox="0 0 24 24">
+    <circle cx="11" cy="11" r="8"/>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </symbol>
+  <!-- Sliders -->
+  <symbol id="ic-sliders" viewBox="0 0 24 24">
+    <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+    <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+    <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+    <line x1="1" y1="14" x2="7" y2="14"/>
+    <line x1="9" y1="8" x2="15" y2="8"/>
+    <line x1="17" y1="16" x2="23" y2="16"/>
+  </symbol>
+  <!-- X -->
+  <symbol id="ic-x" viewBox="0 0 24 24">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </symbol>
+  <!-- Plus -->
+  <symbol id="ic-plus" viewBox="0 0 24 24">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
+  </symbol>
+  <!-- Chevron right -->
+  <symbol id="ic-chev" viewBox="0 0 24 24">
+    <polyline points="9 18 15 12 9 6"/>
+  </symbol>
+  <!-- Arrow right -->
+  <symbol id="ic-arr" viewBox="0 0 24 24">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="12 5 19 12 12 19"/>
+  </symbol>
+  <!-- Person -->
+  <symbol id="ic-person" viewBox="0 0 24 24">
+    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </symbol>
+  <!-- Lock -->
+  <symbol id="ic-lock" viewBox="0 0 24 24">
+    <rect x="3" y="11" width="18" height="11" rx="2"/>
+    <path d="M7 11V7a5 5 0 0110 0v4"/>
+  </symbol>
+  <!-- Eye -->
+  <symbol id="ic-eye" viewBox="0 0 24 24">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <!-- Eye off -->
+  <symbol id="ic-eye-off" viewBox="0 0 24 24">
+    <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+    <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+    <line x1="1" y1="1" x2="23" y2="23"/>
+  </symbol>
+</svg>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const PEDIDOS = [
+  { id:'1',  cliente:'Ana Carolina Silva', servico:'Ajuste de Vestido', peca:'Vestido Social',  data:'18 Mai 2025', horario:'09:00', status:'Em Produção'       },
+  { id:'2',  cliente:'Bruno Mendes',       servico:'Barra de Calça',    peca:'Calça Jeans',     data:'18 Mai 2025', horario:'10:30', status:'Agendado'           },
+  { id:'3',  cliente:'Carla Ferreira',     servico:'Customização',      peca:'Jaqueta',         data:'18 Mai 2025', horario:'11:00', status:'Pronto para Prova'  },
+  { id:'4',  cliente:'Daniel Souza',       servico:'Conserto',          peca:'Terno',           data:'19 Mai 2025', horario:'14:00', status:'Entregue'           },
+  { id:'5',  cliente:'Fernanda Lima',      servico:'Ajuste de Vestido', peca:'Vestido de Festa',data:'20 Mai 2025', horario:'10:00', status:'Agendado'           },
+  { id:'6',  cliente:'Gustavo Ramos',      servico:'Barra de Calça',    peca:'Calça Social',    data:'20 Mai 2025', horario:'11:30', status:'Em Produção'       },
+  { id:'7',  cliente:'Helena Martins',     servico:'Modelagem',         peca:'Blusa sob Medida',data:'15 Mai 2025', horario:'09:30', status:'Entregue'           },
+  { id:'8',  cliente:'Igor Peixoto',       servico:'Customização',      peca:'Camiseta',        data:'14 Mai 2025', horario:'14:00', status:'Entregue'           },
+];
+
+const SVC_ICON = {
+  'Ajuste de Vestido': 'ic-scissors',
+  'Barra de Calça':    'ic-ruler',
+  'Customização':      'ic-star',
+  'Conserto':          'ic-wrench',
+  'Modelagem':         'ic-spool',
+  'Costura':           'ic-needle',
+};
+
+const ST = {
+  'Em Produção':       { bg:'var(--status-prod-bg)',  text:'var(--status-prod-text)',  dot:'var(--status-prod-dot)',  bar:'var(--status-prod-bar)'  },
+  'Agendado':          { bg:'var(--status-ag-bg)',    text:'var(--status-ag-text)',    dot:'var(--status-ag-dot)',    bar:'var(--status-ag-bar)'    },
+  'Pronto para Prova': { bg:'var(--status-prova-bg)', text:'var(--status-prova-text)', dot:'var(--status-prova-dot)', bar:'var(--status-prova-bar)' },
+  'Entregue':          { bg:'var(--status-ent-bg)',   text:'var(--status-ent-text)',   dot:'var(--status-ent-dot)',   bar:'var(--status-ent-bar)'   },
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+const ic = (id, cls='') =>
+  `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+let currentScreen = 'login';
+function showScreen(name) {
+  const prev = document.getElementById('screen-' + currentScreen);
+  const next = document.getElementById('screen-' + name);
+  if (!prev || !next || name === currentScreen) return;
+  prev.classList.replace('visible', name === 'main' ? 'hidden-left' : 'hidden-right');
+  next.classList.remove('hidden-left', 'hidden-right');
+  next.classList.add('visible');
+  currentScreen = name;
+}
+
+let query = '';
+const cnt = s => PEDIDOS.filter(p => p.status === s).length;
+
+// ── CARD ──────────────────────────────────────────────────────────────────
+function card(p) {
+  const s  = ST[p.status] || ST['Agendado'];
+  const ic_svc = SVC_ICON[p.servico] || 'ic-scissors';
+  return `
+  <div class="order-card">
+    <div class="card-ribbon" style="background:${s.bar}"></div>
+    <div class="card-body">
+      <div class="card-top">
+        <div class="svc-thumb">${ic(ic_svc)}</div>
+        <div class="card-meta">
+          <div class="card-client">${p.cliente}</div>
+          <div class="card-service">${p.servico}</div>
+          <div class="card-peca">${ic('ic-tag')} ${p.peca}</div>
+        </div>
+        <div class="status-pill" style="background:${s.bg};border-color:${s.dot}22">
+          <div class="status-pip" style="background:${s.dot}"></div>
+          <span class="status-txt" style="color:${s.text}">${p.status}</span>
+        </div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-foot">
+        <div class="c-meta">${ic('ic-cal')}<span>${p.data}</span></div>
+        <div class="c-meta">${ic('ic-clock')}<span>${p.horario}</span></div>
+        <button class="details-btn" data-id="${p.id}">Ver ${ic('ic-chev')}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function secHdr(label, count, badgeBg, badgeColor) {
+  return `
+  <div class="sec-hdr">
+    <div class="sec-rule"></div>
+    <span class="sec-title">${label}</span>
+    <span class="sec-badge" style="background:${badgeBg};color:${badgeColor}">${count}</span>
+    <div class="sec-rule"></div>
+  </div>`;
+}
+
+function renderList() {
+  const q = query.toLowerCase();
+  const data = q
+    ? PEDIDOS.filter(p => p.cliente.toLowerCase().includes(q) || p.servico.toLowerCase().includes(q) || p.peca.toLowerCase().includes(q))
+    : PEDIDOS;
+
+  const groups = [
+    { label:'Em <em>Produção</em>',       key:'Em Produção',       bb:'var(--status-prod-bg)',  bc:'var(--status-prod-text)'  },
+    { label:'<em>Agendados</em>',          key:'Agendado',          bb:'var(--status-ag-bg)',    bc:'var(--status-ag-text)'    },
+    { label:'Pronto para <em>Prova</em>',  key:'Pronto para Prova', bb:'var(--status-prova-bg)', bc:'var(--status-prova-text)' },
+    { label:'<em>Entregues</em>',          key:'Entregue',          bb:'var(--status-ent-bg)',   bc:'var(--status-ent-text)'   },
+  ];
+
+  let html = '';
+  groups.forEach(g => {
+    const items = data.filter(p => p.status === g.key);
+    if (items.length === 0) return;
+    html += secHdr(g.label, items.length, g.bb, g.bc);
+    items.forEach(p => html += card(p));
+  });
+
+  if (!html) html = `
+    <div class="empty-state">
+      ${ic('ic-search')}
+      <div class="empty-title">Nenhum pedido encontrado</div>
+      <div class="empty-sub">Tente outro nome, serviço ou peça.</div>
+    </div>`;
+
+  document.getElementById('list-wrap').innerHTML = html;
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────
+function openModal(id) {
+  const p = PEDIDOS.find(x => x.id === id); if (!p) return;
+  const s = ST[p.status] || ST['Agendado'];
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${p.cliente}</div>
+    <div class="modal-service">${p.servico} · ${p.peca}</div>
+    <div class="modal-divider"></div>
+    <div class="modal-row"><span class="modal-lbl">Data</span><span class="modal-val">${p.data}</span></div>
+    <div class="modal-row"><span class="modal-lbl">Horário</span><span class="modal-val">${p.horario}</span></div>
+    <div class="modal-row">
+      <span class="modal-lbl">Status</span>
+      <span class="modal-val" style="color:${s.text}">${p.status}</span>
+    </div>
+    <div class="modal-row"><span class="modal-lbl">Peça</span><span class="modal-val">${p.peca}</span></div>
+    <button class="modal-close" onclick="closeModal()">Fechar</button>
+  `;
+  document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-ov').classList.remove('open'); }
+
+// ── BUILD DOM ─────────────────────────────────────────────────────────────
+document.getElementById('root').innerHTML = `
+
+<!-- ── LOGIN ── -->
+<div id="screen-login" class="screen visible">
+  <div class="login-deco-top"></div>
+  <div class="login-deco-bot"></div>
+  <div class="login-inner">
+
+    <div class="logo-wrap fu fu1">
+      <div class="logo-emblem">${ic('ic-scissors','')}</div>
+      <div class="logo-name">Ateliê <em>Bella</em></div>
+      <div class="logo-tagline">Costura · Modelagem · Alta Costura</div>
+    </div>
+
+    <div class="login-card fu fu2">
+      <div class="login-title">Bem-vinda, <em>costureira</em></div>
+      <div class="login-subtitle">Acesse para gerenciar os pedidos do ateliê</div>
+
+      <div class="field">
+        <label class="field-label" for="inp-user">Usuário</label>
+        <div class="field-wrap">
+          ${ic('ic-person','field-icon')}
+          <input id="inp-user" type="text" placeholder="Seu usuário" autocomplete="off"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="inp-pass">Senha</label>
+        <div class="field-wrap">
+          ${ic('ic-lock','field-icon')}
+          <input id="inp-pass" type="password" placeholder="Sua senha" autocomplete="off"/>
+          <button class="eye-btn" id="eye-btn" aria-label="Mostrar senha">
+            ${ic('ic-eye','')}
+          </button>
+        </div>
+      </div>
+
+      <div id="err-msg" class="error-msg"></div>
+
+      <div class="forgot"><a href="#">Esqueceu a senha?</a></div>
+
+      <button class="btn-login" id="btn-login">
+        Entrar ${ic('ic-arr','')}
+      </button>
+
+      <div class="stitch-line">
+        <span class="stitch-long"></span>
+        <span></span><span></span><span></span>
+        <span class="stitch-long"></span>
+      </div>
+
+      <div class="login-footer">
+        <span>Novo ateliê?</span>
+        <a href="#">Solicitar cadastro</a>
+      </div>
+    </div>
+
+    <div class="version-tag fu fu3">Ateliê Bella · v1.0</div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div id="screen-main" class="screen hidden-right">
+
+  <div class="app-header">
+    <div class="h-left">
+      <div class="h-emblem">${ic('ic-scissors','')}</div>
+      <div>
+        <div class="h-name">Ateliê <em>Bella</em></div>
+        <div class="h-sub">Gestão de Pedidos</div>
+      </div>
+    </div>
+    <div class="h-right">
+      <button class="icon-btn" id="notif-btn" aria-label="Notificações">
+        ${ic('ic-bell','')}
+        <div class="notif-pip"></div>
+      </button>
+      <button class="avatar-btn" id="avatar-btn" aria-label="Sair">AB</button>
+    </div>
+  </div>
+
+  <div class="main-scroll">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card s-prod">
+        <div class="stat-dot" style="background:var(--status-prod-dot)"></div>
+        <div class="stat-num" id="cnt-prod">0</div>
+        <div class="stat-lbl">Em Produção</div>
+      </div>
+      <div class="stat-card s-ag">
+        <div class="stat-dot" style="background:var(--status-ag-dot)"></div>
+        <div class="stat-num" id="cnt-ag">0</div>
+        <div class="stat-lbl">Agendados</div>
+      </div>
+      <div class="stat-card s-prova">
+        <div class="stat-dot" style="background:var(--status-prova-dot)"></div>
+        <div class="stat-num" id="cnt-prova">0</div>
+        <div class="stat-lbl">Para Prova</div>
+      </div>
+      <div class="stat-card s-ent">
+        <div class="stat-dot" style="background:var(--status-ent-dot)"></div>
+        <div class="stat-num" id="cnt-ent">0</div>
+        <div class="stat-lbl">Entregues</div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-row">
+      <div class="search-wrap">
+        ${ic('ic-search','')}
+        <input id="search-inp" type="text" placeholder="Buscar cliente, serviço ou peça…"/>
+        <button class="clear-btn" id="clear-btn" aria-label="Limpar" style="display:none">
+          ${ic('ic-x','')}
+        </button>
+      </div>
+      <button class="filter-btn" id="filter-btn" aria-label="Filtros">
+        ${ic('ic-sliders','')}
+      </button>
+    </div>
+
+    <!-- List -->
+    <div id="list-wrap"></div>
+  </div>
+
+  <button class="fab" id="fab-btn" aria-label="Novo pedido">
+    ${ic('ic-plus','')}
+  </button>
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-ov">
+  <div class="modal-sheet" id="modal-inner"></div>
+</div>
+`;
+
+// Stats
+document.getElementById('cnt-prod').textContent  = cnt('Em Produção');
+document.getElementById('cnt-ag').textContent    = cnt('Agendado');
+document.getElementById('cnt-prova').textContent = cnt('Pronto para Prova');
+document.getElementById('cnt-ent').textContent   = cnt('Entregue');
+
+// ── EVENTS ────────────────────────────────────────────────────────────────
+
+// Eye toggle
+let passVis = false;
+document.getElementById('eye-btn').addEventListener('click', () => {
+  passVis = !passVis;
+  document.getElementById('inp-pass').type = passVis ? 'text' : 'password';
+  document.querySelector('#eye-btn use').setAttribute('href', passVis ? '#ic-eye-off' : '#ic-eye');
+});
+
+// Login
+document.getElementById('btn-login').addEventListener('click', () => {
+  const u = document.getElementById('inp-user').value.trim();
+  const p = document.getElementById('inp-pass').value.trim();
+  const e = document.getElementById('err-msg');
+  if (!u || !p) {
+    e.textContent = !u ? 'Informe seu usuário.' : 'Informe sua senha.';
+    e.classList.add('show'); return;
+  }
+  e.classList.remove('show');
+  renderList();
+  showScreen('main');
+});
+['inp-user','inp-pass'].forEach(id =>
+  document.getElementById(id).addEventListener('keydown', ev => {
+    if (ev.key === 'Enter') document.getElementById('btn-login').click();
+  })
+);
+
+// Notif
+document.getElementById('notif-btn').addEventListener('click', () =>
+  alert('Você tem 2 notificações: prova da Ana às 09h e entrega do Daniel às 14h.')
+);
+
+// Avatar / logout
+document.getElementById('avatar-btn').addEventListener('click', () => {
+  if (confirm('Deseja sair do ateliê?')) showScreen('login');
+});
+
+// Search
+document.getElementById('search-inp').addEventListener('input', e => {
+  query = e.target.value;
+  document.getElementById('clear-btn').style.display = query ? '' : 'none';
+  renderList();
+});
+document.getElementById('clear-btn').addEventListener('click', () => {
+  query = '';
+  document.getElementById('search-inp').value = '';
+  document.getElementById('clear-btn').style.display = 'none';
+  renderList();
+});
+
+document.getElementById('filter-btn').addEventListener('click', () =>
+  alert('Filtros avançados por período e status em breve!')
+);
+
+document.getElementById('fab-btn').addEventListener('click', () =>
+  alert('Tela de novo pedido em breve!')
+);
+
+// Card click (delegation)
+document.getElementById('list-wrap').addEventListener('click', e => {
+  const btn = e.target.closest('.details-btn');
+  if (btn) openModal(btn.dataset.id);
+});
+
+// Close modal
+document.getElementById('modal-ov').addEventListener('click', e => {
+  if (e.target.id === 'modal-ov') closeModal();
+});
+</script>
+</body>
+</html>
