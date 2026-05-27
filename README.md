@@ -65,4 +65,5 @@ Sem dependências externas instaladas localmente. As fontes são carregadas via 
 | Modelagem | Carretel |
 | Costura | Agulha |
 
+🔗 Visualize o projeto online: [https://opanascimentoo.github.io/Atelie/](https://opanascimentoo.github.io/Atelie/)
 
