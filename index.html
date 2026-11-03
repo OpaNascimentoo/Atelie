@@ -54,7 +54,6 @@
       background: var(--cream);
     }
 
-    /* ── SCREEN TRANSITIONS ─────────────────────── */
     .screen {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
@@ -65,7 +64,7 @@
     .screen.hidden-right { transform: translateX(100%);  opacity: 0; pointer-events: none; }
     .screen.visible      { transform: translateX(0);     opacity: 1; }
 
-    /* ── LOGIN ──────────────────────────────────── */
+
     #screen-login {
       background: var(--charcoal);
       align-items: center;
@@ -74,7 +73,7 @@
       overflow: hidden;
     }
 
-    /* Fabric texture dots */
+
     #screen-login::before {
       content: '';
       position: absolute; inset: 0;
@@ -379,13 +378,13 @@
     .details-btn:hover { background: var(--cream3); transform: translateX(1px); }
     .details-btn svg { width: 11px; height: 11px; stroke: var(--wine); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Empty */
+
     .empty-state { display: flex; flex-direction: column; align-items: center; padding: 56px 20px; gap: 10px; }
     .empty-state svg { width: 44px; height: 44px; stroke: var(--cream3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
     .empty-title { font-family: var(--font-serif); font-size: 18px; color: var(--warm-gray); }
     .empty-sub { font-size: 12px; color: var(--light-text); }
 
-    /* FAB */
+    
     .fab {
       position: fixed; bottom: 26px;
       right: calc(50% - 215px + 18px);
@@ -400,7 +399,7 @@
     .fab:active { transform: scale(0.96); }
     .fab svg { width: 24px; height: 24px; stroke: var(--gold2); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Modal */
+    
     .modal-overlay {
       position: fixed; inset: 0; z-index: 200;
       background: rgba(44,36,32,0.55);
@@ -511,22 +510,22 @@
 <body>
 <div id="root"></div>
 
-<!-- ── INLINE SVG SYMBOLS ───────────────────────────────────────── -->
+
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Scissors -->
+ 
   <symbol id="ic-scissors" viewBox="0 0 24 24">
     <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
     <line x1="20" y1="4" x2="8.12" y2="15.88"/>
     <line x1="14.47" y1="14.48" x2="20" y2="20"/>
     <line x1="8.12" y1="8.12" x2="12" y2="12"/>
   </symbol>
-  <!-- Needle / sewing (custom path) -->
+  
   <symbol id="ic-needle" viewBox="0 0 24 24">
     <path d="M12 3 C12 3 20 8 20 14 C20 18.4 16.4 22 12 22 C7.6 22 4 18.4 4 14 C4 8 12 3 12 3Z"/>
     <line x1="12" y1="3" x2="12" y2="14"/>
     <ellipse cx="12" cy="14" rx="2" ry="2"/>
   </symbol>
-  <!-- Thread spool -->
+
   <symbol id="ic-spool" viewBox="0 0 24 24">
     <ellipse cx="12" cy="5" rx="7" ry="3"/>
     <ellipse cx="12" cy="19" rx="7" ry="3"/>
@@ -534,57 +533,57 @@
     <line x1="19" y1="5" x2="19" y2="19"/>
     <ellipse cx="12" cy="12" rx="3" ry="5"/>
   </symbol>
-  <!-- Ruler -->
+
   <symbol id="ic-ruler" viewBox="0 0 24 24">
     <path d="M3 21l18-18M7.5 13.5L10.5 16.5M10.5 10.5L13.5 13.5M13.5 7.5L16.5 10.5"/>
     <line x1="3" y1="21" x2="21" y2="3"/>
   </symbol>
-  <!-- Shirt / garment -->
+ 
   <symbol id="ic-shirt" viewBox="0 0 24 24">
     <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
   </symbol>
-  <!-- Wrench / fix -->
+
   <symbol id="ic-wrench" viewBox="0 0 24 24">
     <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
   </symbol>
-  <!-- Star / customização -->
+ 
   <symbol id="ic-star" viewBox="0 0 24 24">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </symbol>
-  <!-- Tuxedo / terno -->
+  
   <symbol id="ic-tux" viewBox="0 0 24 24">
     <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
     <line x1="12" y1="10" x2="12" y2="18"/>
     <polyline points="10 10 12 7 14 10"/>
   </symbol>
-  <!-- Tag / peça -->
+ 
   <symbol id="ic-tag" viewBox="0 0 24 24">
     <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
     <line x1="7" y1="7" x2="7.01" y2="7"/>
   </symbol>
-  <!-- Calendar -->
+
   <symbol id="ic-cal" viewBox="0 0 24 24">
     <rect x="3" y="4" width="18" height="18" rx="2"/>
     <line x1="16" y1="2" x2="16" y2="6"/>
     <line x1="8" y1="2" x2="8" y2="6"/>
     <line x1="3" y1="10" x2="21" y2="10"/>
   </symbol>
-  <!-- Clock -->
+ 
   <symbol id="ic-clock" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12 6 12 12 16 14"/>
   </symbol>
-  <!-- Bell -->
+
   <symbol id="ic-bell" viewBox="0 0 24 24">
     <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
     <path d="M13.73 21a2 2 0 01-3.46 0"/>
   </symbol>
-  <!-- Search -->
+
   <symbol id="ic-search" viewBox="0 0 24 24">
     <circle cx="11" cy="11" r="8"/>
     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
   </symbol>
-  <!-- Sliders -->
+
   <symbol id="ic-sliders" viewBox="0 0 24 24">
     <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
     <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
@@ -593,41 +592,41 @@
     <line x1="9" y1="8" x2="15" y2="8"/>
     <line x1="17" y1="16" x2="23" y2="16"/>
   </symbol>
-  <!-- X -->
+
   <symbol id="ic-x" viewBox="0 0 24 24">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6" y1="6" x2="18" y2="18"/>
   </symbol>
-  <!-- Plus -->
+  
   <symbol id="ic-plus" viewBox="0 0 24 24">
     <line x1="12" y1="5" x2="12" y2="19"/>
     <line x1="5" y1="12" x2="19" y2="12"/>
   </symbol>
-  <!-- Chevron right -->
+  
   <symbol id="ic-chev" viewBox="0 0 24 24">
     <polyline points="9 18 15 12 9 6"/>
   </symbol>
-  <!-- Arrow right -->
+
   <symbol id="ic-arr" viewBox="0 0 24 24">
     <line x1="5" y1="12" x2="19" y2="12"/>
     <polyline points="12 5 19 12 12 19"/>
   </symbol>
-  <!-- Person -->
+  
   <symbol id="ic-person" viewBox="0 0 24 24">
     <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
     <circle cx="12" cy="7" r="4"/>
   </symbol>
-  <!-- Lock -->
+
   <symbol id="ic-lock" viewBox="0 0 24 24">
     <rect x="3" y="11" width="18" height="11" rx="2"/>
     <path d="M7 11V7a5 5 0 0110 0v4"/>
   </symbol>
-  <!-- Eye -->
+
   <symbol id="ic-eye" viewBox="0 0 24 24">
     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
     <circle cx="12" cy="12" r="3"/>
   </symbol>
-  <!-- Eye off -->
+ 
   <symbol id="ic-eye-off" viewBox="0 0 24 24">
     <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
     <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
@@ -664,7 +663,7 @@ const ST = {
   'Entregue':          { bg:'var(--status-ent-bg)',   text:'var(--status-ent-text)',   dot:'var(--status-ent-dot)',   bar:'var(--status-ent-bar)'   },
 };
 
-// ── HELPERS ───────────────────────────────────────────────────────────────
+
 const ic = (id, cls='') =>
   `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
 
@@ -1178,7 +1177,7 @@ async function renderList() {
   document.getElementById('list-wrap').innerHTML = html;
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────
+
 function openModal(id) {
   const p = PEDIDOS.find(x => x.id === id); if (!p) return;
   const s = ST[p.status] || ST['Agendado'];
@@ -1200,7 +1199,7 @@ function openModal(id) {
 }
 function closeModal() { document.getElementById('modal-ov').classList.remove('open'); }
 
-// ── BUILD DOM ─────────────────────────────────────────────────────────────
+
 document.getElementById('root').innerHTML = `
 
 <!-- ── LOGIN ── -->
@@ -1351,9 +1350,9 @@ document.getElementById('cnt-ag').textContent    = cnt('Agendado');
 document.getElementById('cnt-prova').textContent = cnt('Pronto para Prova');
 document.getElementById('cnt-ent').textContent   = cnt('Entregue');
 
-// ── EVENTS ────────────────────────────────────────────────────────────────
 
-// Eye toggle
+
+
 let passVis = false;
 document.getElementById('eye-btn').addEventListener('click', () => {
   passVis = !passVis;
@@ -1385,12 +1384,12 @@ document.getElementById('notif-btn').addEventListener('click', () =>
   alert('Você tem 2 notificações: prova da Ana às 09h e entrega do Daniel às 14h.')
 );
 
-// Avatar / logout
+
 document.getElementById('avatar-btn').addEventListener('click', () => {
   if (confirm('Deseja sair do ateliê?')) showScreen('login');
 });
 
-// Search
+
 document.getElementById('search-inp').addEventListener('input', e => {
   query = e.target.value;
   document.getElementById('clear-btn').style.display = query ? '' : 'none';
