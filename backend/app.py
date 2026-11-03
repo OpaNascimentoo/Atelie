@@ -27,7 +27,7 @@ def create_app():
 
     @app.route("/")
     def index():
-        return send_from_directory(str(BASE_DIR), "index.html.html")
+        return send_from_directory(str(BASE_DIR), "index.html")
 
     @app.route("/api/health")
     def health():
@@ -48,4 +48,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
