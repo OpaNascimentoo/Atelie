@@ -1,40 +1,95 @@
-# Ateliê Bella — Gestão de Pedidos e Backend em Python
+# Ateliê Bella — Sistema Web para Gerenciamento de Ateliê de Costura
 
-Aplicação web para gerenciamento do ateliê com painel visual original, estrutura de backend Flask e dados mockados para demonstrar funcionamento real do sistema.
+Aplicação web desenvolvida para auxiliar no gerenciamento das atividades de um ateliê de costura, centralizando informações de **clientes, produtos, doações e encomendas** em um único ambiente.
 
-## Objetivo
+O projeto conta com uma interface web responsiva integrada a um **backend desenvolvido em Python e Flask**, permitindo operações de cadastro, consulta, atualização e exclusão (CRUD).
 
-Este projeto preserva a interface visual original do ateliê, mantém a navegação e o layout do dashboard e adiciona a estrutura de backend em Python para operar clientes, produtos, encomendas, doações e pedidos.
+🌐 **Acesse o projeto:** https://atelie-nlso.onrender.com/
 
-A aplicação usa dados temporários em arquivo JSON para permitir CRUD funcional, com base pronta para evolução futura para banco de dados real.
+---
 
-## Tecnologias
+## 🎯 Objetivo
 
-- HTML/CSS/JavaScript
+O Ateliê Bella foi desenvolvido com o objetivo de oferecer uma solução digital para organizar as principais informações e atividades de um ateliê de costura.
+
+A aplicação mantém uma interface visual inspirada no conceito de alta costura e integra essa interface a um backend responsável pelo processamento e gerenciamento dos dados.
+
+Atualmente, os dados são armazenados de forma temporária em arquivos **JSON**, permitindo o funcionamento completo das operações do sistema. A integração com um banco de dados está prevista como uma evolução futura do projeto.
+
+---
+
+## 🚀 Funcionalidades
+
+### 👤 Clientes
+
+- Cadastro de clientes
+- Consulta de clientes
+- Edição de informações
+- Exclusão de registros
+
+### 🧵 Vitrine
+
+- Cadastro de produtos
+- Consulta de produtos
+- Edição de produtos
+- Exclusão de produtos
+- Organização dos produtos apresentados pelo ateliê
+
+### 🎁 Doações
+
+- Cadastro de doações
+- Consulta de registros
+- Edição de informações
+- Exclusão de registros
+
+### 📦 Encomendas
+
+- Cadastro de encomendas
+- Consulta de encomendas
+- Edição de informações
+- Exclusão de registros
+- Gerenciamento do status das encomendas
+
+### 📊 Dashboard
+
+- Visualização geral das informações
+- Organização das encomendas por status
+- Busca e consulta de registros
+- Exibição de informações de clientes, serviços, peças, datas e horários
+- Visualização de detalhes dos registros
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+### Front-end
+- HTML5
+- CSS3
+- JavaScript
+
+### Back-end
 - Python 3
 - Flask
-- JSON para persistência temporária
 
-## Funcionalidades
+### Armazenamento
+- JSON
 
-- Tela de login com validação e exibição/ocultação da senha
-- Dashboard com agrupamento por status
-- Cards com cliente, serviço, peça, data, horário e status
-- Busca por cliente, serviço ou peça
-- Estatísticas por status
-- Modal de detalhes
-- Navegação entre áreas do sistema
-- Backend em Flask com CRUD por domínio
-- Persistência em JSON em memória do projeto
+### Testes
+- Testes automatizados para validação das principais funcionalidades da API
 
-## Design
+---
 
-- Fonte de títulos: Cormorant Garamond
-- Fonte de texto: Jost
-- Cores principais: vinho, dourado, creme e carvão
-- Interface responsiva
+## 🔗 Integração Front-end + Back-end
 
-## Estrutura do projeto
+O sistema foi desenvolvido com a integração entre a interface web e uma API REST criada em Python utilizando Flask.
+
+O front-end realiza requisições à API para consultar e modificar os dados, enquanto o backend é responsável pelo processamento das operações e pela persistência temporária das informações.
+
+A arquitetura foi organizada de forma modular, permitindo que a aplicação possa evoluir posteriormente para a utilização de um banco de dados sem a necessidade de reconstrução completa do sistema.
+
+---
+
+## 📁 Estrutura do projeto
 
 ```text
 Atelie/
@@ -69,153 +124,189 @@ Atelie/
 │   └── test_backend.py
 ├── index.html
 ├── requirements.txt
-├── README.md
-└── tmp_check.js
+└── README.md
 ```
 
-## Como instalar
+---
 
-1. Crie um ambiente virtual:
+## 💻 Como executar localmente
+
+### 1. Clonar o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd Atelie
+```
+
+### 2. Criar o ambiente virtual
 
 ```bash
 python -m venv .venv
 ```
 
-2. Ative o ambiente virtual:
+### 3. Ativar o ambiente virtual
 
-- Windows:
+**Windows:**
 
 ```bash
 .venv\Scripts\activate
 ```
 
-- Linux/macOS:
+**Linux/macOS:**
 
 ```bash
 source .venv/bin/activate
 ```
 
-3. Instale as dependências:
+### 4. Instalar as dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Como executar
-
-### Backend
-
-No Windows com Python instalado localmente:
-
-```bash
-"C:\Users\Useu\AppData\Local\Programs\Python\Python312\python.exe" backend\app.py
-```
-
-Ou, se o Python estiver no PATH:
+### 5. Executar o backend
 
 ```bash
 python backend/app.py
 ```
 
-A aplicação ficará disponível em:
+A aplicação ficará disponível localmente em:
 
-- http://127.0.0.1:5000/
-- http://127.0.0.1:5000/api/health
+```text
+http://127.0.0.1:5000/
+```
 
-## Principais endpoints
+Para verificar o funcionamento da API:
+
+```text
+http://127.0.0.1:5000/api/health
+```
+
+---
+
+## 🔌 Principais endpoints
 
 ### Pedidos
 
-- GET /api/pedidos
-- GET /api/pedidos/<id>
-- POST /api/pedidos
-- PUT /api/pedidos/<id>
-- DELETE /api/pedidos/<id>
-- PATCH /api/pedidos/<id>/status
+```text
+GET    /api/pedidos
+GET    /api/pedidos/<id>
+POST   /api/pedidos
+PUT    /api/pedidos/<id>
+DELETE /api/pedidos/<id>
+PATCH  /api/pedidos/<id>/status
+```
 
 ### Clientes
 
-- GET /api/clientes
-- GET /api/clientes/<id>
-- POST /api/clientes
-- PUT /api/clientes/<id>
-- DELETE /api/clientes/<id>
+```text
+GET    /api/clientes
+GET    /api/clientes/<id>
+POST   /api/clientes
+PUT    /api/clientes/<id>
+DELETE /api/clientes/<id>
+```
 
 ### Vitrine
 
-- GET /api/produtos
-- GET /api/produtos/<id>
-- POST /api/produtos
-- PUT /api/produtos/<id>
-- DELETE /api/produtos/<id>
+```text
+GET    /api/produtos
+GET    /api/produtos/<id>
+POST   /api/produtos
+PUT    /api/produtos/<id>
+DELETE /api/produtos/<id>
+```
 
 ### Encomendas
 
-- GET /api/encomendas
-- GET /api/encomendas/<id>
-- POST /api/encomendas
-- PUT /api/encomendas/<id>
-- DELETE /api/encomendas/<id>
+```text
+GET    /api/encomendas
+GET    /api/encomendas/<id>
+POST   /api/encomendas
+PUT    /api/encomendas/<id>
+DELETE /api/encomendas/<id>
+```
 
 ### Doações
 
-- GET /api/doacoes
-- GET /api/doacoes/<id>
-- POST /api/doacoes
-- PUT /api/doacoes/<id>
-- DELETE /api/doacoes/<id>
-
-## Exemplos de requisição
-
-### Criar pedido
-
-```bash
-curl -X POST http://127.0.0.1:5000/api/pedidos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "cliente": "Maria Oliveira",
-    "servico": "Ajuste de Vestido",
-    "peca": "Vestido de festa",
-    "data": "25 Mai 2025",
-    "horario": "15:00",
-    "status": "Agendado"
-  }'
+```text
+GET    /api/doacoes
+GET    /api/doacoes/<id>
+POST   /api/doacoes
+PUT    /api/doacoes/<id>
+DELETE /api/doacoes/<id>
 ```
 
-### Consultar clientes
+---
 
-```bash
-curl http://127.0.0.1:5000/api/clientes
-```
+## 🧪 Testes
 
-## Observações
+O projeto possui testes automatizados para verificar o funcionamento das principais operações do backend e da API.
 
-- O sistema usa persistência temporária em JSON para demonstrar a lógica funcional do backend.
-- O dashboard visual foi preservado e a API foi integrada sem substituir a base original.
-- A estrutura está pronta para migrar para banco de dados real em uma etapa posterior.
-- Os testes automatizados validam o comportamento crítico da API.
+Os testes podem ser executados conforme a configuração definida no projeto.
 
-## Status dos pedidos
+---
 
-| Status | Cor |
-|---|---|
-| Em Produção | Laranja |
-| Agendado | Índigo |
-| Pronto para Prova | Roxo |
-| Entregue | Verde |
+## 🎨 Design
 
-## Serviços com ícone mapeado
+A interface do Ateliê Bella foi desenvolvida com uma identidade visual inspirada no universo da alta costura.
 
-| Serviço | Ícone |
-|---|---|
-| Ajuste de Vestido | Tesoura |
-| Barra de Calça | Régua |
-| Customização | Estrela |
-| Conserto | Chave inglesa |
-| Modelagem | Carretel |
-| Costura | Agulha |
+### Características
 
-## Visual do projeto
+- Design responsivo
+- Interface organizada e intuitiva
+- Tipografia **Cormorant Garamond** para títulos
+- Tipografia **Jost** para textos
+- Paleta baseada em tons de vinho, dourado, creme e carvão
+- Dashboard para visualização das principais informações
+- Navegação entre os diferentes módulos do sistema
 
-O projeto foi desenvolvido para manter uma estética refinada e inspirada em alta costura, com foco em clareza, organização visual e fidelidade ao design original.
+---
 
+## 💾 Persistência dos dados
+
+Atualmente, o sistema utiliza arquivos **JSON** para armazenamento temporário dos dados.
+
+Essa abordagem foi utilizada para permitir a implementação e demonstração das operações CRUD durante o desenvolvimento do projeto.
+
+A utilização de um **banco de dados real** está prevista como uma etapa futura, permitindo ampliar a capacidade de armazenamento, segurança e gerenciamento das informações.
+
+---
+
+## 📌 Status do projeto
+
+**Concluído nesta etapa:** ✅
+
+- Interface web desenvolvida
+- Backend em Python/Flask
+- Integração entre front-end e backend
+- CRUD de clientes
+- CRUD de produtos
+- CRUD de doações
+- CRUD de encomendas
+- Persistência temporária em JSON
+- Testes das principais funcionalidades
+- Aplicação publicada na web
+
+### Próximos passos
+
+- Integração com banco de dados
+- Aprimoramento da persistência dos dados
+- Evolução das funcionalidades de gerenciamento
+- Melhorias de segurança e autenticação
+
+---
+
+## 🌐 Projeto online
+
+A aplicação pode ser acessada pelo endereço:
+
+**https://atelie-nlso.onrender.com/**
+
+---
+
+## 👩‍💻 Projeto acadêmico
+
+Projeto desenvolvido como parte do **Projeto Interdisciplinar — 4º CONTEEX**, no curso de **Inteligência Artificial e Machine Learning**.
+
+**Ateliê Bella — Sistema Web para Gerenciamento de Ateliê de Costura**
